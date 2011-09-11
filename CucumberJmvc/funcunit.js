@@ -540,6 +540,7 @@ addEvent(window, "load", function() {
 });
 
 function done() {
+	
 	if ( config.doneTimer && window.clearTimeout ) {
 		window.clearTimeout( config.doneTimer );
 		config.doneTimer = null;
