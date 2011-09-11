@@ -1,6 +1,7 @@
 Given(/I have entered (\d+) in the calculator/, function(value)
 {
-	S("#calculator").type(vale);
+	S.open("index.html");
+	S("#calculator").type(value);
 });
 
 When(/I press (\w+)/, function(value)
