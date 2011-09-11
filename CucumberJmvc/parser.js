@@ -1,4 +1,4 @@
-$.ajax({
+FuncUnit.jquery.ajax({
 	  url: 'test.feature',
 	  beforeSend: function(xhr) 
 	  {
