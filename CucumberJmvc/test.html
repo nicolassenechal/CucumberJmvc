@@ -9,10 +9,12 @@
         </style>
 	    <script type='text/javascript' src='funcunit.js'></script>
 		<script type='text/javascript' src="cucumber_jmvc.js"></script>
-		<script type='text/javascript' src="steps.js"></script>
+		<script type='text/javascript' src="features/support/paths.js"></script>
+		<script type='text/javascript' src="features/step_definitions/steps.js"></script>
+		<script type='text/javascript' src="features/step_definitions/web_steps.js"></script>
 		<script type='text/javascript'>
-		   CucumberJmvc.runFeature("test.feature");
-		   CucumberJmvc.runFeature("test.feature");
+		   CucumberJmvc.runFeature("features/test.feature");
+		   CucumberJmvc.runFeature("features/test.feature");
 		</script>
 	</head>
 	<body>
