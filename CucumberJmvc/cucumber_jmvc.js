@@ -51,7 +51,8 @@ CucumberJmvc.runFeature = function(filePath)
 		    		for(var i=0;i<testArray.length;i++)
 			    	{
 			    		var myTest = testArray[i];
-			    		myTest.step(myTest.variables);
+			    		//myTest.step(myTest.variables);
+			    		myTest.step.apply(this,myTest.variables);
 			    	}
 		    	});
 		    }
@@ -88,7 +89,7 @@ CucumberJmvc.runFeature = function(filePath)
 						var res = match[2].match(CucumberJmvc.statements[previous.toLowerCase()][j].regex);
 						if(res)
 						{
-							matches.push({step:CucumberJmvc.statements[previous.toLowerCase()][j].step,variables:res.splice(0,1)});
+							matches.push({step:CucumberJmvc.statements[previous.toLowerCase()][j].step,variables:res.splice(1,res.length-1)});
 						}	
 					}	
 					if(!matches.length)
@@ -110,7 +111,6 @@ CucumberJmvc.runFeature = function(filePath)
 				}	
 		    }
 		    createTest(testArray);
-		    QUnit.start();
 		  }
 	});
 };

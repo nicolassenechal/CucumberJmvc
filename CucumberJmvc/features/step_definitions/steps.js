@@ -1,6 +1,12 @@
 Given(/I have entered (\d+) in the calculator/, function(value)
 {
-	S.open("index.html");
+	ok(true, "Calculator value: "+value)
+	S("#calculator").type(value);
+});
+
+Given(/I have entered (\d+) and (\d+) in the calculator/, function(value, value2)
+{
+	ok(true, "Calculator values: "+value+" "+value2)
 	S("#calculator").type(value);
 });
 
