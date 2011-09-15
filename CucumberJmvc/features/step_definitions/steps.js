@@ -11,5 +11,5 @@ When(/I press (\w+)/, function(value)
 
 Then(/I should see (\d+) in the calculator/, function(value)
 {
-	equal($("#calculator").value(),value);
+	equal(S("#calculator").val(),value);
 });
