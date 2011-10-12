@@ -105,33 +105,48 @@ When(/^(?:|I )follow "([^\"]*)"$/, function(link)
 
 When(/^(?:|I )fill in "([^\"]*)" with "([^\"]*)"$/, function(field, value)
 {
-	find_field(field).val(value);
+	find_field(field).type(value);
 });		
 
 When(/^(?:|I )fill in "([^\"]*)" for "([^\"]*)"$/, function(value, field)
 {
-	find_field(field).val(value);
+	find_field(field).type(value);
 });		
 
 When(/^(?:|I )select "([^"]*)" from "([^"]*)"$/, function(value, field)
 {
-	find_field(field).val(value);
+	//Assume traditional radio buttons
+	find_field(field).click();
 });	
 
 When(/^(?:|I )check "([^"]*)"$/, function(field)
 {
-	find_field(field).val(true);
+	field = find_field(field);
+	if(!field.val())
+	{
+		field.click();
+	}	
 });
 
 When(/^(?:|I )uncheck "([^"]*)"$/, function(field)
 {
-	find_field(field).val(false);
+	field = find_field(field);
+	if(field.val())
+	{
+		field.click();
+	}	
+});
+
+When(/^(?:|I )choose "([^"]*)"$/, function(field)
+{
+	//Assume traditional radio buttons
+	find_field(field).click();
 });
 
 Then(/^(?:|I )should see "([^"]*)"$/, function(text)
 {		
 	ok(S("*:contains("+ text +")").visible());
-}			
+});			
 
 Then(/^(?:|I )should see element "([^"]*)"$/, function(selector)
 {
@@ -141,7 +156,7 @@ Then(/^(?:|I )should see element "([^"]*)"$/, function(selector)
 Then(/^(?:|I )should not see "([^"]*)"$/, function(text)
 {		
 	ok(!S("*:contains("+ text +")").visible());
-}			
+});			
 
 Then(/^(?:|I )should not see element "([^"]*)"$/, function(selector)
 {
@@ -151,9 +166,84 @@ Then(/^(?:|I )should not see element "([^"]*)"$/, function(selector)
 Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/, function(field, parent, value)
 {
 	ok(new Regex(value).match(find_field(field, parent).val()));
-}		
+});		
 
 Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/, function(field, parent, value)
 {
 	ok(!new Regex(value).match(find_field(field, parent).val()));
-}	
+});	
+
+Then(/^the "([^"]*)" field should have the error "([^"]*)"$/, function(field, error_message)
+{
+	var element = find_field(field);
+	if(element.hasClass('field_with_errors') || element.hasClass('error'))
+	{
+		ok(true);
+	}
+	else if(new RegEx(error_message).test(S("body").text()))
+	{
+		ok(true);
+	}	
+	else
+	{
+		ok(false);
+	}
+});
+
+Then(/^the "([^"]*)" field should have no error$/, function(field)
+{
+	var element = find_field(field);
+	if(element.hasClass('field_with_errors') || element.hasClass('error'))
+	{
+		ok(false);
+	}
+	else
+	{
+		ok(true);
+	}
+});		
+
+Then(/^the "([^"]*)" checkbox(?: within (.*))? should be checked$/, function(label, parent)
+{
+	field = find_field(field);
+	ok(field.val());
+});
+
+Then(/^the "([^"]*)" checkbox(?: within (.*))? should not be checked$/, function(label, parent)
+{
+	field = find_field(field);
+	ok(!field.val());
+});
+
+Then(/^(?:|I )should be on (.+)$/, function(page_name)
+{
+	var current_path = S.window.location.href;
+	equal(page_name, path_to(current_path));
+});	
+
+Then(/^(?:|I )should have the following query string:$/, function(expected_pairs)
+{
+	var hash = S.window.location.hash;
+	hash = hash.substring(1,hash.length);
+	hash = hash.split("&");
+	var result = {};
+	for(var i=0;i<hash.length;i++)
+	{
+		if(hash[i])
+		{
+			var s = hash[i].split("=");
+			result[s[0]] = s[1];
+		}			
+	}	
+	var expected = {};
+	expected_pairs = expected_pairs.split("&");
+	for(var i=0;i<expected_pairs.length;i++)
+	{
+		if(hash[i])
+		{
+			var s = hash[i].split("=");
+			expected[s[0]] = s[1];
+		}			
+	}
+	deepEqual(result,expected);
+});		
