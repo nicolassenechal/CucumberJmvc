@@ -217,7 +217,7 @@ Then(/^the "([^"]*)" checkbox(?: within (.*))? should not be checked$/, function
 
 Then(/^(?:|I )should be on (.+)$/, function(page_name)
 {
-	var current_path = S.window.location.href;
+	var current_path = S._window.location.href;
 	equal(page_name, path_to(current_path));
 });	
 

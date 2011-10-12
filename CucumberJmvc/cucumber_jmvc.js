@@ -51,7 +51,6 @@ CucumberJmvc.runFeature = function(filePath)
 		    		for(var i=0;i<testArray.length;i++)
 			    	{
 			    		var myTest = testArray[i];
-			    		//myTest.step(myTest.variables);
 			    		myTest.step.apply(this,myTest.variables);
 			    	}
 		    	});
@@ -110,7 +109,9 @@ CucumberJmvc.runFeature = function(filePath)
 					throw new Error("Badly formed line",lines[i]);
 				}	
 		    }
+		    
 		    createTest(testArray);
+		   
 		  }
 	});
 };

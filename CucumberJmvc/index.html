@@ -1,8 +1,23 @@
 <html>
     <head>
+        <script type="text/javascript" src="jquery.js"></script>
+        <script>
+        $(document).ready(function() 
+        {
+        	  $("#add").click(function()
+        	  {
+        		 $("#result").val(parseInt($("#calculator").val())+parseInt($("#calculator2").val()));
+        	  });
+        });
+        </script>
     </head>
     <body>
         <input id="calculator" type="text">
+        </input> 
+        <input id="calculator2" type="text">
+        </input> 
+        <button id="add">Add</button>
+        <input id="result" type="text">
         </input> 
     </body>
 </html>
