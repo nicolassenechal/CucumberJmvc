@@ -11329,7 +11329,6 @@ open: function( path, callback, timeout ) {
 	}
 	FuncUnit.add({
 		method: function(success, error){ //function that actually does stuff, if this doesn't call success by timeout, error will be called, or can call error itself
-			
 			FuncUnit._open(fullPath, error);
 			FuncUnit._onload(function(){
 				FuncUnit._opened();
@@ -11396,7 +11395,10 @@ _opened: function() {}
 		//where we should add things in a callback
 		currentPosition = 0;
 		
-	
+	FuncUnit.isAvailable = function()
+	{
+		return queue.length == 0 && !incallback;
+	};
 	FuncUnit.
 	/**
 	 * @hide
@@ -11433,7 +11435,6 @@ _opened: function() {}
 		var next, 
 			timer,
 			speed = 0;
-			
 		if(FuncUnit.speed == "slow"){
 			speed = 500;
 		}
@@ -11444,7 +11445,6 @@ _opened: function() {}
 			next = queue.shift();
 			currentPosition = 0;
 			// set a timer that will error
-			
 			
 			//call next method
 			setTimeout(function(){
@@ -11676,7 +11676,6 @@ FuncUnit.init.prototype = {
 			context = this.context;
 		FuncUnit.add({
 			method : function(success, error){
-				
 				FuncUnit.$(selector, context, "triggerSyn", "_type", text, success)
 			},
 			callback : callback,

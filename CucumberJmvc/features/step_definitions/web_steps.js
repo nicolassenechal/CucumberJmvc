@@ -20,6 +20,7 @@ Given(/^(?:|I )am on (.+)$/, function(page_name)
 When(/^(?:|I )go to (.+)$/, function(page_name)
 {
 	S.open(path_to(page_name));
+
 });		
 
 var find = function(selector)

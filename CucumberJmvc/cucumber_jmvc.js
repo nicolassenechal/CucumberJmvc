@@ -34,7 +34,7 @@ CucumberJmvc.runFeature = function(filePath)
 			/** Maybe define setup with Feature definition ? **/
 			module("Test",{
 				setup : function(){
-					
+					//S.open(path_to("the homepage"));
 				}
 			});
 			
