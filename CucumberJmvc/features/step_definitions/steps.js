@@ -19,8 +19,6 @@ Then(/I should see (\d+) in the result/, function(value)
 {
 	S("body").exists(function()
 	{
-		console.log("val", S("#result").val())
-		//Rewrite equal, ok... as blocking Funcunit steps
 		equal(S("#result").val(),value);
 	})
 

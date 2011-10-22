@@ -43,15 +43,35 @@ CucumberJmvc.runFeature = function(filePath)
 		    var tests = [];
 		    
 		    var previous = null;
-		
+		    var context = this;
+		    
+		    /**
+		     * Needs to be in a different context than test()
+		     * @param test
+		     * @returns
+		     */
+		    var add = function(test)
+		    {
+		    	 FuncUnit.add({
+	    				method: function(success, error){
+	    					success();
+	    				},
+	    				callback: function()
+	    				{
+	    					test.step.apply(context, test.variables);
+	    				},
+	    				error: "Error in step",
+	    				bind: this
+	    			});
+		    };
+		    
 		    var createTest = function(testArray)
 		    {
 		    	test("Random test", function()
 		    	{
 		    		for(var i=0;i<testArray.length;i++)
 			    	{
-			    		var myTest = testArray[i];
-			    		myTest.step.apply(this,myTest.variables);
+			    		add(testArray[i]);
 			    	}
 		    	});
 		    }
