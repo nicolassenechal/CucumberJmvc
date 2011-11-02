@@ -1,3 +1,4 @@
+Scenario: Test addition in the calculator
 Given I am on the home page 
 And I have entered 50 and 70 in the calculator
 When I press add

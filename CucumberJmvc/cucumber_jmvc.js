@@ -22,8 +22,11 @@ CucumberJmvc.runFeature = function(filePath)
 		  success: function( data ) 
 		  {  
 			/** Maybe define setup with Feature definition ? **/
-			module("Test",{
-				setup : function(){
+			module("Test",
+			{
+				setup : function()
+				{
+					
 					//S.open(path_to("the homepage"));
 				}
 			});
@@ -32,7 +35,7 @@ CucumberJmvc.runFeature = function(filePath)
 		   
 		    var tests = [];
 		    
-		    var previous = null;
+		    var title = null;
 		    var context = this;
 		    
 		    /**
@@ -55,61 +58,59 @@ CucumberJmvc.runFeature = function(filePath)
 	    			});
 		    };
 		    
-		    var createTest = function(testArray)
+		    var createTest = function(testArray, title)
 		    {
-		    	test("Random test", function()
+		    	test(title, function()
 		    	{
 		    		for(var i=0;i<testArray.length;i++)
 			    	{
 			    		add(testArray[i]);
 			    	}
 		    	});
-		    }
+		    };
 		    var testArray;
 		    for(var i=0;i<lines.length;i++)
 		    {
-				var match =  lines[i].match(/^(Given|When|Then|And|But) (.+)$/);
+				var match =  lines[i].match(/^(Given|When|Then|And|But|Scenario:) (.+)$/);
 				if("" == lines[i])
 				{
 					//Nothing to do
 				}
 				else if(match)
 				{
-					if("Given" == match[1])
+					if("Scenario:" == match[1])
 					{
 						if(testArray)
 						{
-							createTest(testArray);
+							createTest(testArray, title);
 						}
 						testArray = [];
-						previous = true;
+						title = match[2];
 					}	
-					if("Given" != match[1] && !previous)
-					{
-						throw new Error("First line needs to start with Given");
-					}	
-					
-					var matches = [];
-					for(var j=0;j<CucumberJmvc.statements.length;j++)
-					{
-						var res = match[2].match(CucumberJmvc.statements[j].regex);
-						if(res)
-						{
-							matches.push({step:CucumberJmvc.statements[j].step,variables:res.splice(1,res.length-1)});
-						}	
-					}	
-					if(!matches.length)
-					{
-						throw new Error("Missing statement",lines[i]);
-					}
-					else if(matches.length>1)
-					{
-						throw new Error("Too many statements", lines[i], matches);
-					}
 					else
 					{
-						testArray.push(matches[0]);
-					}	
+						var matches = [];
+						for(var j=0;j<CucumberJmvc.statements.length;j++)
+						{
+							var res = match[2].match(CucumberJmvc.statements[j].regex);
+							if(res)
+							{
+								matches.push({step:CucumberJmvc.statements[j].step,variables:res.splice(1,res.length-1)});
+							}	
+						}	
+						if(!matches.length)
+						{
+							throw new Error("Missing statement",lines[i]);
+						}
+						else if(matches.length>1)
+						{
+							throw new Error("Too many statements", lines[i], matches);
+						}
+						else
+						{
+							testArray.push(matches[0]);
+						}	
+					}
 				}
 				else
 				{
@@ -117,7 +118,7 @@ CucumberJmvc.runFeature = function(filePath)
 				}	
 		    }
 		    
-		    createTest(testArray);
+		    createTest(testArray, title);
 		   
 		  }
 	});
