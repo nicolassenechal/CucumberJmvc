@@ -68,7 +68,7 @@ CucumberJmvc.runFeature = function(filePath)
 		    var testArray;
 		    for(var i=0;i<lines.length;i++)
 		    {
-				var match =  lines[i].match(/^(Given|When|Then|And) (.+)$/);
+				var match =  lines[i].match(/^(Given|When|Then|And|But) (.+)$/);
 				if("" == lines[i])
 				{
 					//Nothing to do
