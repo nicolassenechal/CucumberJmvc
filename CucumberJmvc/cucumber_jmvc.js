@@ -68,21 +68,53 @@ CucumberJmvc.runFeature = function(filePath)
 			    	}
 		    	});
 		    };
+		    
+		    var createModule = function(testArray)
+		    {
+		    	module("Module", 
+		    	{
+		    		setup: function()
+		    		{
+		    			for(var i=0;i<testArray.length;i++)
+				    	{
+				    		add(testArray[i]);
+				    	}
+		    		}		    		
+		    	});
+		    };
 		    var testArray;
+		    var setBackground = false;
 		    for(var i=0;i<lines.length;i++)
 		    {
-				var match =  lines[i].match(/^(Given|When|Then|And|But|Scenario:) (.+)$/);
+		    	//Empty module. Necessary but ugly... Can do better
+		    	if(i==0)
+		    	{
+		    		createModule([]);
+		    	}
+				var match =  lines[i].match(/^(Given|When|Then|And|But|Scenario:|Background:) (.+)$/);
 				if("" == lines[i])
 				{
 					//Nothing to do
 				}
 				else if(match)
 				{
-					if("Scenario:" == match[1])
+					if("Background:" == match[1])
+					{
+						setBackground = true;
+					}
+					else if("Scenario:" == match[1])
 					{
 						if(testArray)
 						{
-							createTest(testArray, title);
+							if(setBackground)
+							{
+								createModule(testArray);
+								setBackground = false;
+							}
+							else
+							{
+								createTest(testArray, title);
+							}	
 						}
 						testArray = [];
 						title = match[2];
