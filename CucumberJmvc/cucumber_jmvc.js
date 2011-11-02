@@ -1,20 +1,10 @@
 var CucumberJmvc = {};
 
-CucumberJmvc.statements = {given:[],when:[],then:[]};
+CucumberJmvc.statements =[];
 
-var Given = function(regex, step)
+Given = When = Then = function(regex, step)
 {
-	CucumberJmvc.statements.given.push({regex:regex,step:step});
-};
-
-var When = function(regex, step)
-{
-	CucumberJmvc.statements.when.push({regex:regex,step:step});
-};
-
-var Then = function(regex, step)
-{
-	CucumberJmvc.statements.then.push({regex:regex,step:step});
+	CucumberJmvc.statements.push({regex:regex,step:step});
 };
 
 CucumberJmvc.runFeature = function(filePath)
@@ -78,7 +68,6 @@ CucumberJmvc.runFeature = function(filePath)
 		    var testArray;
 		    for(var i=0;i<lines.length;i++)
 		    {
-		    	
 				var match =  lines[i].match(/^(Given|When|Then|And) (.+)$/);
 				if("" == lines[i])
 				{
@@ -93,22 +82,20 @@ CucumberJmvc.runFeature = function(filePath)
 							createTest(testArray);
 						}
 						testArray = [];
+						previous = true;
 					}	
 					if("Given" != match[1] && !previous)
 					{
 						throw new Error("First line needs to start with Given");
 					}	
-					if("And" != match[1])
-					{
-						previous = match[1];
-					}
+					
 					var matches = [];
-					for(var j=0;j<CucumberJmvc.statements[previous.toLowerCase()].length;j++)
+					for(var j=0;j<CucumberJmvc.statements.length;j++)
 					{
-						var res = match[2].match(CucumberJmvc.statements[previous.toLowerCase()][j].regex);
+						var res = match[2].match(CucumberJmvc.statements[j].regex);
 						if(res)
 						{
-							matches.push({step:CucumberJmvc.statements[previous.toLowerCase()][j].step,variables:res.splice(1,res.length-1)});
+							matches.push({step:CucumberJmvc.statements[j].step,variables:res.splice(1,res.length-1)});
 						}	
 					}	
 					if(!matches.length)
